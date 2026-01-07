@@ -589,6 +589,7 @@ namespace serialize
         {
             m_data = NULL;
             m_numBytes = 0;
+            m_numWords = 0;
             m_numBits = m_numBytes * 8;
             m_bitsRead = 0;
             m_scratch = 0;
@@ -620,11 +621,7 @@ namespace serialize
             @see BitWriter
          */
 
-#ifdef SERIALIZE_DEBUG
         BitReader( const void * serialize_restrict data, int bytes ) : m_data( (const uint32_t*) data ), m_numBytes( bytes ), m_numWords( ( bytes + 3 ) / 4 )
-#else // #ifdef SERIALIZE_DEBUG
-        BitReader( const void * serialize_restrict data, int bytes ) : m_data( (const uint32_t*) data ), m_numBytes( bytes )
-#endif // #ifdef SERIALIZE_DEBUG
         {
             serialize_assert( data );
             m_numBits = m_numBytes * 8;
@@ -788,9 +785,7 @@ namespace serialize
         uint64_t m_scratch;                                 ///< The scratch value. New data is read in 32 bits at a top to the left of this buffer, and data is read off to the right.
         int m_numBits;                                      ///< Number of bits to read in the buffer. Of course, we can't *really* know this so it's actually m_numBytes * 8.
         int m_numBytes;                                     ///< Number of bytes to read in the buffer. We know this, and this is the non-rounded up version.
-#ifdef SERIALIZE_DEBUG
-        int m_numWords;                                     ///< Number of words to read in the buffer. This is rounded up to the next word if necessary.
-#endif // #ifdef SERIALIZE_DEBUG
+        int m_numWords;                                     ///< Number of words to read in the buffer. This is rounded up to the next word if necessary. Only used in debug builds.
         int m_bitsRead;                                     ///< Number of bits read from the buffer so far.
         int m_scratchBits;                                  ///< Number of bits currently in the scratch value. If the user wants to read more bits than this, we have to go fetch another dword from memory.
         int m_wordIndex;                                    ///< Index of the next word to read from memory.

@@ -2314,7 +2314,7 @@ struct TestObject
 
 inline void test_serialize()
 {
-    const int BufferSize = 1048;
+    const int BufferSize = 1024;
 
     uint8_t buffer[BufferSize];
 
